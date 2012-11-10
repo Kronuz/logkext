@@ -5,5 +5,5 @@
 /sbin/kextload /System/Library/Extensions/logKext.kext
 /Library/Application\ Support/logKext/logKextKeyGen
 /bin/launchctl load /Library/LaunchDaemons/logKext.plist
-/usr/bin/open /LogKext\ Readme.html
+/usr/bin/open /Library/Application\ Support/logKext/LogKext\ Readme.html
 

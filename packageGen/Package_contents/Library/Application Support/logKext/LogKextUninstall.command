@@ -12,7 +12,5 @@ then
 sudo rm "`sudo defaults read com.fsb.logKext Pathname`"
 fi;
 sudo rm -f /usr/bin/logKextClient
-sudo rm -f /LogKext\ Readme.html
 sudo defaults delete com.fsb.logKext
-sudo rm -f /LogKextUninstall.command
 sudo kextunload -b com.fsb.kext.logKext

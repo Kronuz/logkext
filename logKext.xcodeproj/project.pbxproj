@@ -68,7 +68,7 @@
 		F890ACBC0D22FCA100A9C9B9 /* Copy Extension */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = ../packageGen/Package_contents/kext;
+			dstPath = ../packageGen/Package_contents/System/Library/Extensions;
 			dstSubfolderSpec = 16;
 			files = (
 				F890ACBD0D22FF2900A9C9B9 /* logKext.kext in Copy Extension */,
@@ -357,7 +357,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "LK_INSTALL_ROOT=/tmp/logKextInstallRoot\nrm -rf $LK_INSTALL_ROOT\ncp -R $BUILD_DIR/packageGen $LK_INSTALL_ROOT\n/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker --doc $LK_INSTALL_ROOT/logKext.pmdoc -o $BUILD_DIR/logKext.pkg\nrm -rf $LK_INSTALL_ROOT\necho $BUILD_DIR\n";
+			shellScript = "pkgbuild --identifier com.fsb.kext.logKext --version 2.3 --root $BUILD_DIR/packageGen/Package_contents --scripts $BUILD_DIR/packageGen/Install_resources/ $BUILD_DIR/logKext.pkg && echo $BUILD_DIR\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
