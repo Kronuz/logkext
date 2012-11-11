@@ -644,7 +644,7 @@ void makeEncryptKey()
 	OSStatus secRes = SecKeychainOpen("/Library/Keychains/System.keychain", &sysChain);
 	if (secRes)
 	{
-		printf("Couldn't get system keychain: %ld\n",secRes);
+		printf("Couldn't get system keychain: %ld\n",(unsigned long)secRes);
 		return;
 	}
 
@@ -657,7 +657,7 @@ void makeEncryptKey()
 	secRes = SecKeychainFindGenericPassword(sysChain, strlen("logKextPassKey"), "logKextPassKey", NULL, NULL, &passLen, &passData, NULL);
 	if (secRes)
 	{
-		printf("Error finding passKey in keychain (%ld). Failing\n",secRes);
+		printf("Error finding passKey in keychain (%ld). Failing\n",(unsigned long)secRes);
 		exit(-1);
 	}
 /*	
