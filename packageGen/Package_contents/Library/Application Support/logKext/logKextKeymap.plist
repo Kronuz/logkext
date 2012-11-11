@@ -11,7 +11,7 @@
 		<key>0x04</key>
 		<string>&lt;opt&gt;</string>
 		<key>0x08</key>
-		<string>&lt;cntrl&gt;</string>
+		<string>&lt;ctrl&gt;</string>
 	</dict>
 	<key>Lowercase</key>
 	<dict>

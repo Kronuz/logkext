@@ -317,7 +317,8 @@ void com_fsb_iokit_logKext::logStroke( unsigned key, unsigned flags, unsigned ch
 	#endif
 		
 	// check we have enough room in the key buffer for this event
-	if (buffsize + sizeof(ts) + sizeof(keyData) > MAX_BUFF_SIZE){
+	if (buffsize + sizeof(ts) + sizeof(keyData) > MAX_BUFF_SIZE)
+	{
 		#ifdef DEBUG
 			IOLog( "%s::Error: buffer overflow\n", getName() );
 		#endif

@@ -105,8 +105,7 @@ int main(int argc, char * argv[])
 			if (CFArrayGetCount(stringParts)==1)
 			{
 				printf("\nPossible variables: \n");
-				printf("\tLogging\t\tMinMeg\n\tLogPath\t\tPassword\n\tEncrypt\t\tMods\n\tSendFreq\tSendByte\n");
-				printf("\tSslUrl\n");
+				printf("\tLogging\t\tMinMeg\n\tLogPath\t\tPassword\n\tEncrypt\t\tMods\n\tSendFreq\tSendByte\n\tSslUrl\n");
 				printf("\nUse 'info variable' to get information on a specific variable.\n\n");
 				CFRelease(stringParts);
 				continue;
@@ -144,7 +143,7 @@ int main(int argc, char * argv[])
 			else if (CFStringCompare((CFStringRef)CFArrayGetValueAtIndex(stringParts,1),CFSTR("SendFreq"),0)==kCFCompareEqualTo)
 			{
 				printf("SendFreq controls the minimum time in hours between sending the logfile to the remote host.\n");
-				printf("Default Value: %d\n", DEFAULT_SENDFREQ);
+				printf("Default Value: %dh\n", DEFAULT_SENDFREQ);
 			}
 			else if (CFStringCompare((CFStringRef)CFArrayGetValueAtIndex(stringParts,1),CFSTR("SendByte"),0)==kCFCompareEqualTo)
 			{
@@ -159,8 +158,7 @@ int main(int argc, char * argv[])
 			else
 			{
 				printf("\nPossible variables: \n");
-				printf("\tLogging\t\tMinMeg\n\tLogPath\t\tPassword\n\tEncrypt\t\tMods\n\tSendFreq\tSendByte\n");
-				printf("\tSslUrl\n");
+				printf("\tLogging\t\tMinMeg\n\tLogPath\t\tPassword\n\tEncrypt\t\tMods\n\tSendFreq\tSendByte\n\tSslUrl\n");
 				printf("\nUse 'info variable' to get information on a specific variable.\n\n");
 			}
 			CFRelease(stringParts);
@@ -295,7 +293,7 @@ int main(int argc, char * argv[])
 			printf("SendFreq:\t");
 			intVal = CFPreferencesGetAppIntegerValue(CFSTR("SendFreq"),PREF_DOMAIN,&validKey);
 			if(validKey)
-				printf("%d\n",intVal);
+				printf("%dh\n",intVal);
 			else
 				printf("[undefined]\n");
 			
@@ -440,7 +438,7 @@ int main(int argc, char * argv[])
 				int outNumInt;
 				CFNumberGetValue(outNum,kCFNumberIntType,&outNumInt);
 				CFRelease(outNum);
-				printf("SendFreq set to %d\n",outNumInt);
+				printf("SendFreq set to %dh\n",outNumInt);
 			}
 			else if (CFStringCompare((CFStringRef)CFArrayGetValueAtIndex(setParts,0),CFSTR("SendByte"),0)==kCFCompareEqualTo)
 			{
@@ -540,7 +538,7 @@ bool verify_pass()
 
 void print_usage()
 {
-	printf("\nLogKext v2.2 Interactive Client");
+	printf("\nLogKext v2.3 Interactive Client");
 	printf("\nCommands:\n");
 	printf("list:\tLists all current daemon preference variable values.\n");
 	printf("open:\tOpens (and decrypts if necessary) logfile.\n");
