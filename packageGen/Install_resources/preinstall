@@ -1,0 +1,16 @@
+#!/bin/sh
+
+/bin/launchctl stop com.fsb.logKext
+/bin/launchctl unload /Library/LaunchDaemons/logKext.plist
+/Library/Application\ Support/logKext/logKextKeyGen remove
+rm -f /Library/LaunchDaemons/logKext.plist
+rm -rf /System/Library/Extensions/logKext.kext
+rm -rf /Library/Application\ Support/logKext
+rm -rf /Library/Receipts/logKext*
+if [ -z "`defaults read com.fsb.logKext Pathname | grep 'does not exist'`" ]; then
+	rm "`defaults read com.fsb.logKext Pathname`"
+fi;
+rm -f /usr/bin/logKextClient
+defaults delete com.fsb.logKext
+/sbin/kextunload -b com.fsb.kext.logKext
+rm -f /Library/Preferences/com.fsb.logKext

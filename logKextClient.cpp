@@ -222,7 +222,7 @@ int main(int argc, char * argv[])
 			continue;
 		}
 		if (CFStringCompare((CFStringRef)CFArrayGetValueAtIndex(stringParts,0),CFSTR("print"),0)==kCFCompareEqualTo)
-		{	
+		{			
 			CFStringRef pathName = (CFStringRef)CFPreferencesCopyAppValue(CFSTR("Pathname"),PREF_DOMAIN);
 			long file_len = file_length(pathName);
 			if (file_len)
@@ -248,11 +248,11 @@ int main(int argc, char * argv[])
 		if (CFStringCompare((CFStringRef)CFArrayGetValueAtIndex(stringParts,0),CFSTR("list"),0)==kCFCompareEqualTo)
 		{
 			Boolean			validKey;
-			unsigned int	intVal;
+			unsigned int		intVal;
 			CFStringRef		strVal; // Don't forget to CFRelease every created object reference!
 			
 			printf("\nCurrent preference variable values:\n");
-			
+						
 			printf("Logging:\t");
 			if (CFPreferencesGetAppBooleanValue(CFSTR("Logging"),PREF_DOMAIN,NULL))
 				printf("on\n");
@@ -275,15 +275,15 @@ int main(int argc, char * argv[])
 			}
 			else
 				printf("[undefined]\n");
-			
+				
 			printf("Password:\tCannot be listed.\n");
-			
+
 			printf("Encrypt:\t");
 			if (CFPreferencesGetAppBooleanValue(CFSTR("Encrypt"),PREF_DOMAIN,NULL))
 				printf("on\n");
 			else
 				printf("off\n");
-			
+								
 			printf("Mods:\t\t");
 			if (CFPreferencesGetAppBooleanValue(CFSTR("Mods"),PREF_DOMAIN,NULL))
 				printf("on\n");
@@ -313,7 +313,7 @@ int main(int argc, char * argv[])
 			}
 			else
 				printf("[undefined]\n");
-			
+				
 			printf("\nUse the 'set' command to change preference variables.\n\n");
 			continue;
 		}
@@ -381,7 +381,7 @@ int main(int argc, char * argv[])
 				char hash[32];
 				for (int i=0; i< 16; i++)
 					sprintf(hash+2*i,"%02x",md5[i]);
-				
+
 				CFStringRef p = CFStringCreateWithCString(kCFAllocatorDefault,hash,kCFStringEncodingASCII);
 				CFPreferencesSetAppValue(CFSTR("Password"),p,PREF_DOMAIN);
 				CFRelease(p);
@@ -574,10 +574,12 @@ CFStringRef decrypt_file(CFStringRef pathName)
 	CFRelease(url);
 	if (!readStream||!(CFReadStreamOpen(readStream)))
 	{
-		if(outFile)
+		if(outFile) {
 			CFRelease(outFile);
-		if(readStream)
+		}
+		if(readStream) {
 			CFRelease(readStream);
+		}
 		return NULL;
 	}
 

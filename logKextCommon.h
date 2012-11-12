@@ -17,7 +17,7 @@
    limitations under the License.
 */
 
-#define MAX_BUFF_SIZE 4096
+#define MAX_BUFF_SIZE 1024
 
 typedef struct {
 	unsigned char buffer[MAX_BUFF_SIZE];
